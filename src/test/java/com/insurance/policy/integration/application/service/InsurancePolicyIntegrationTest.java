@@ -114,15 +114,15 @@ public class InsurancePolicyIntegrationTest {
                 PolicyStatus.ACTIVE,
                 LocalDateTime.now().plusDays(30),
                 LocalDateTime.now(),
-                null, // created_at will be set by the adapter
-                null  // updated_at will be set by the adapter
+                null,
+                null
         );
 
         // When
         insurancePolicyService.createPolicy(policy);
 
         // Then
-        InsurancePolicy savedPolicy = repository.findPolicyById(1); // Assuming ID 1
+        InsurancePolicy savedPolicy = repository.findPolicyById(1);
         assertThat(savedPolicy.getCreatedAt()).isNotNull();
         assertThat(savedPolicy.getUpdatedAt()).isNotNull();
         assertThat(savedPolicy.getCreatedAt()).isEqualTo(savedPolicy.getUpdatedAt());
@@ -141,7 +141,7 @@ public class InsurancePolicyIntegrationTest {
                 null
         );
 
-        // Create
+
         insurancePolicyService.createPolicy(policy);
 
         InsurancePolicy savedPolicy = repository.findPolicyById(1);

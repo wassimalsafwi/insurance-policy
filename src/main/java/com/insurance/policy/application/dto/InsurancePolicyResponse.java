@@ -1,6 +1,5 @@
 package com.insurance.policy.application.dto;
 
-
 import com.insurance.policy.application.domain.model.PolicyStatus;
 
 import java.time.LocalDateTime;
@@ -25,7 +24,6 @@ public class InsurancePolicyResponse {
         this.updatedAt = updatedAt;
     }
 
-    // Getters and Setters
     public Integer getId() {
         return id;
     }

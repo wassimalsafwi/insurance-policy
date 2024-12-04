@@ -1,6 +1,5 @@
 package com.insurance.policy.acceptance.steps;
 
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

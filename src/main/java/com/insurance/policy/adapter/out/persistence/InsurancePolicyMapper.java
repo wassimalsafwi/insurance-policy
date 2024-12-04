@@ -1,6 +1,5 @@
 package com.insurance.policy.adapter.out.persistence;
 
-
 import com.insurance.policy.application.domain.model.InsurancePolicy;
 import com.insurance.policy.application.dto.InsurancePolicyRequest;
 import com.insurance.policy.application.dto.InsurancePolicyResponse;
@@ -34,7 +33,6 @@ public class InsurancePolicyMapper {
                 policy.getUpdatedAt()
         );
     }
-
 
     public InsurancePolicy mapRequestToDomain(InsurancePolicyRequest request) {
         return new InsurancePolicy(

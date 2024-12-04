@@ -1,6 +1,5 @@
 package com.insurance.policy.unit.adapter.out.persistence;
 
-
 import com.insurance.policy.adapter.out.persistence.InsurancePolicyMapper;
 import com.insurance.policy.adapter.out.persistence.InsurancePolicyRow;
 import com.insurance.policy.application.domain.model.InsurancePolicy;

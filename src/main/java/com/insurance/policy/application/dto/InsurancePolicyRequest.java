@@ -32,7 +32,6 @@ public class InsurancePolicyRequest {
         this.endDate = endDate;
     }
 
-    // Getters and Setters
     public String getPolicyName() {
         return policyName;
     }
