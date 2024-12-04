@@ -1,0 +1,48 @@
+# Maven or Gradle build files
+/target/
+.gradle/
+/build/
+
+# IntelliJ IDEA project files
+*.iml
+.idea/
+
+# Eclipse project files
+.classpath
+.project
+.settings/
+
+# VS Code project files
+.vscode/
+
+# Logs
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.swp
+*.bak
+*.sublime-workspace
+
+# Application-specific files
+*.env
+*.properties.local
+
+# Dependencies and generated files
+*.jar
+*.war
+*.ear
+
+# Swagger and OpenAPI generated files
+generated/
+
+# Test reports
+/test-output/
+*.coverage
+
+# Others
+node_modules/
