@@ -16,8 +16,7 @@ public class InsurancePolicyConfig {
     }
 
     @Bean
-    public InsurancePolicyServicePort insurancePolicyServicePort(
-            InsurancePolicyRepositoryPort repository) {
+    public InsurancePolicyServicePort insurancePolicyServicePort(InsurancePolicyRepositoryPort repository) {
         return new InsurancePolicyService(repository);
     }
 

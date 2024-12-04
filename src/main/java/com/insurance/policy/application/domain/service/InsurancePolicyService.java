@@ -3,8 +3,6 @@ package com.insurance.policy.application.domain.service;
 import com.insurance.policy.application.domain.model.InsurancePolicy;
 import com.insurance.policy.application.port.in.InsurancePolicyServicePort;
 import com.insurance.policy.application.port.out.InsurancePolicyRepositoryPort;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,7 +11,6 @@ public class InsurancePolicyService implements InsurancePolicyServicePort {
 
     private final InsurancePolicyRepositoryPort repository;
 
-    @Autowired
     public InsurancePolicyService(InsurancePolicyRepositoryPort repository) {
         this.repository = repository;
     }
@@ -38,7 +35,6 @@ public class InsurancePolicyService implements InsurancePolicyServicePort {
     }
 
     @Override
-    @Transactional
     public InsurancePolicy updatePolicy(Integer id, InsurancePolicy policy) {
         InsurancePolicy existingPolicy = repository.findPolicyById(id);
         policy.setCreatedAt(existingPolicy.getCreatedAt());

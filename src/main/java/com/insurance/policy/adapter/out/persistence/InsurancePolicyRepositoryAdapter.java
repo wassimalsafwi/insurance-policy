@@ -55,19 +55,19 @@ public class InsurancePolicyRepositoryAdapter implements InsurancePolicyReposito
 
     @Override
     public void createPolicy(InsurancePolicy policy) {
-        InsurancePolicyRow row = mapper.mapDomainToRow(policy);
+        InsurancePolicyRow createdRow = mapper.mapDomainToRow(policy);
 
         String sql = "INSERT INTO insurance_policy (policy_name, policy_status, start_date, end_date, created_at, updated_at) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, row.getPolicyName());
-            ps.setObject(2, row.getPolicyStatus().name(), java.sql.Types.OTHER);
-            ps.setObject(3, row.getStartDate());
-            ps.setObject(4, row.getEndDate());
-            ps.setObject(5, row.getCreatedAt());
-            ps.setObject(6, row.getUpdatedAt());
+            ps.setString(1, createdRow.getPolicyName());
+            ps.setObject(2, createdRow.getPolicyStatus().name(), java.sql.Types.OTHER);
+            ps.setObject(3, createdRow.getStartDate());
+            ps.setObject(4, createdRow.getEndDate());
+            ps.setObject(5, createdRow.getCreatedAt());
+            ps.setObject(6, createdRow.getUpdatedAt());
             return ps;
         });
     }
