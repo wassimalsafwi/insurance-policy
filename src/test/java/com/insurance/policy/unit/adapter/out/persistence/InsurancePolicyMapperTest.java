@@ -1,12 +1,11 @@
 package com.insurance.policy.unit.adapter.out.persistence;
 
-
 import com.insurance.policy.adapter.out.persistence.InsurancePolicyMapper;
 import com.insurance.policy.adapter.out.persistence.InsurancePolicyRow;
 import com.insurance.policy.application.domain.model.InsurancePolicy;
-import com.insurance.policy.application.domain.model.PolicyStatus;
-import com.insurance.policy.application.dto.InsurancePolicyRequest;
-import com.insurance.policy.application.dto.InsurancePolicyResponse;
+import com.insurance.policy.application.domain.model.enumType.PolicyStatus;
+import com.insurance.policy.adapter.in.web.dto.InsurancePolicyRequest;
+import com.insurance.policy.adapter.in.web.dto.InsurancePolicyResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -87,13 +86,13 @@ public class InsurancePolicyMapperTest {
         InsurancePolicy domain = mapper.mapRequestToDomain(request);
 
         // Then
-        assertThat(domain.getId()).isNull(); // ID is not set in the request
+        assertThat(domain.getId()).isNull();
         assertThat(domain.getPolicyName()).isEqualTo(request.getPolicyName());
         assertThat(domain.getPolicyStatus()).isEqualTo(request.getPolicyStatus());
         assertThat(domain.getStartDate()).isEqualTo(request.getStartDate());
         assertThat(domain.getEndDate()).isEqualTo(request.getEndDate());
-        assertThat(domain.getCreatedAt()).isNotNull(); // CreatedAt is set to the current time
-        assertThat(domain.getUpdatedAt()).isNotNull(); // UpdatedAt is set to the current time
+        assertThat(domain.getCreatedAt()).isNotNull();
+        assertThat(domain.getUpdatedAt()).isNotNull();
     }
 
     @Test

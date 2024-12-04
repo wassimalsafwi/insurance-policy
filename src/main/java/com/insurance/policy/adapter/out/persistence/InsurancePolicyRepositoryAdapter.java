@@ -1,7 +1,7 @@
 package com.insurance.policy.adapter.out.persistence;
 
 import com.insurance.policy.application.domain.model.InsurancePolicy;
-import com.insurance.policy.application.domain.model.PolicyStatus;
+import com.insurance.policy.application.domain.model.enumType.PolicyStatus;
 import com.insurance.policy.application.exception.ResourceNotFoundException;
 import com.insurance.policy.application.port.out.InsurancePolicyRepositoryPort;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,22 +39,23 @@ public class InsurancePolicyRepositoryAdapter implements InsurancePolicyReposito
     public List<InsurancePolicy> findAllPolicies() {
         String sql = "SELECT * FROM insurance_policy";
         List<InsurancePolicyRow> rows = jdbcTemplate.query(sql, rowMapper);
-        return rows.stream().map(mapper::mapRowToDomain).collect(Collectors.toList());
+        return rows.stream()
+                .map(mapper::mapRowToDomain)
+                .collect(Collectors.toList());
     }
 
     @Override
     public InsurancePolicy findPolicyById(Integer id) {
         String sql = "SELECT * FROM insurance_policy WHERE id = ?";
-        return jdbcTemplate.query(sql, rowMapper, id).stream().findFirst().map(mapper::mapRowToDomain).orElseThrow(() -> new ResourceNotFoundException("Insurance policy with ID " + id + " not found"));
+        return jdbcTemplate.query(sql, rowMapper, id).stream()
+                .findFirst()
+                .map(mapper::mapRowToDomain)
+                .orElseThrow(() -> new ResourceNotFoundException("Insurance policy with ID " + id + " not found"));
     }
 
     @Override
     public void createPolicy(InsurancePolicy policy) {
         InsurancePolicyRow row = mapper.mapDomainToRow(policy);
-
-        LocalDateTime now = LocalDateTime.now();
-        row.setCreatedAt(now);
-        row.setUpdatedAt(now);
 
         String sql = "INSERT INTO insurance_policy (policy_name, policy_status, start_date, end_date, created_at, updated_at) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
@@ -74,11 +74,7 @@ public class InsurancePolicyRepositoryAdapter implements InsurancePolicyReposito
 
     @Override
     public void updatePolicy(Integer id, InsurancePolicy policy) {
-        InsurancePolicy existingRow = findPolicyById(id);
-
         InsurancePolicyRow updatedRow = mapper.mapDomainToRow(policy);
-        updatedRow.setCreatedAt(existingRow.getCreatedAt());
-        updatedRow.setUpdatedAt(LocalDateTime.now());
 
         String sql = "UPDATE insurance_policy SET policy_name = ?, policy_status = ?, start_date = ?, end_date = ?, updated_at = ? " +
                 "WHERE id = ?";

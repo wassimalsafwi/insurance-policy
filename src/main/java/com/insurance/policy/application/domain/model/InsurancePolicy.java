@@ -1,5 +1,7 @@
 package com.insurance.policy.application.domain.model;
 
+import com.insurance.policy.application.domain.model.enumType.PolicyStatus;
+
 import java.time.LocalDateTime;
 
 public class InsurancePolicy {

@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="1" author="wassimoo50plo">
+    <changeSet id="1" author="wassim">
 
         <sql>
             CREATE TYPE policy_status_enum AS ENUM ('ACTIVE', 'INACTIVE');

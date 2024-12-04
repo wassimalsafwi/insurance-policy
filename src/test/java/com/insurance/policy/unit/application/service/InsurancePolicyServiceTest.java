@@ -1,7 +1,7 @@
 package com.insurance.policy.unit.application.service;
 
 import com.insurance.policy.application.domain.model.InsurancePolicy;
-import com.insurance.policy.application.domain.model.PolicyStatus;
+import com.insurance.policy.application.domain.model.enumType.PolicyStatus;
 import com.insurance.policy.application.domain.service.InsurancePolicyService;
 import com.insurance.policy.application.exception.ResourceNotFoundException;
 import com.insurance.policy.application.port.out.InsurancePolicyRepositoryPort;
@@ -13,8 +13,10 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class InsurancePolicyServiceTest {
 
@@ -29,7 +31,6 @@ public class InsurancePolicyServiceTest {
 
     @Test
     void getPolicyById_ShouldReturnPolicy_WhenPolicyExists() {
-        // Arrange
         InsurancePolicy policy = new InsurancePolicy(
                 1, "Policy A", PolicyStatus.ACTIVE,
                 LocalDateTime.now(), LocalDateTime.now().plusDays(10),
@@ -37,10 +38,8 @@ public class InsurancePolicyServiceTest {
         );
         when(repository.findPolicyById(1)).thenReturn(policy);
 
-        // Act
         InsurancePolicy result = service.getPolicyById(1);
 
-        // Assert
         assertNotNull(result);
         assertEquals("Policy A", result.getPolicyName());
         verify(repository, times(1)).findPolicyById(1);
@@ -48,10 +47,7 @@ public class InsurancePolicyServiceTest {
 
     @Test
     void getPolicyById_ShouldThrowException_WhenPolicyDoesNotExist() {
-        // Arrange
         when(repository.findPolicyById(1)).thenThrow(new ResourceNotFoundException("Insurance policy with ID 1 not found"));
-
-        // Act & Assert
         assertThrows(RuntimeException.class, () -> service.getPolicyById(1));
         verify(repository, times(1)).findPolicyById(1);
     }

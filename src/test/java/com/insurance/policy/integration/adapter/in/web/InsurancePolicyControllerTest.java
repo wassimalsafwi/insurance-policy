@@ -41,7 +41,6 @@ public class InsurancePolicyControllerTest {
                 .andExpect(jsonPath("$.validationErrors.startDate").value("Start date must not be null"))
                 .andExpect(jsonPath("$.validationErrors.endDate").value("End date must not be null"));
 
-
     }
 
     @Test
@@ -53,7 +52,7 @@ public class InsurancePolicyControllerTest {
             "startDate": "2024-01-01T00:00:00",
             "endDate": "2024-12-31T23:59:59"
         }
-    """;
+        """;
 
         mockMvc.perform(post("/api/insurance-policies")
                         .contentType(MediaType.APPLICATION_JSON)

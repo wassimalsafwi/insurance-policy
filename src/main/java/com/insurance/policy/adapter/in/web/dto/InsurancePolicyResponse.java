@@ -1,38 +1,37 @@
-package com.insurance.policy.application.dto;
+package com.insurance.policy.adapter.in.web.dto;
 
-import com.insurance.policy.application.domain.model.PolicyStatus;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import com.insurance.policy.application.domain.model.enumType.PolicyStatus;
 
 import java.time.LocalDateTime;
 
-public class InsurancePolicyRequest {
+public class InsurancePolicyResponse {
 
-    @NotBlank(message = "Policy name must be filled and with at least a non-whitespace character")
-    @Size(min = 1, max = 255, message = "Policy name must be between 1 and 255 characters")
+    private Integer id;
     private String policyName;
-
-    @NotNull(message = "Policy status must not be null")
     private PolicyStatus policyStatus;
-
-    @NotNull(message = "Start date must not be null")
     private LocalDateTime startDate;
-
-    @NotNull(message = "End date must not be null")
     private LocalDateTime endDate;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    public InsurancePolicyRequest() {
-    }
-
-    public InsurancePolicyRequest(String policyName, PolicyStatus policyStatus, LocalDateTime startDate, LocalDateTime endDate) {
+    public InsurancePolicyResponse(Integer id, String policyName, PolicyStatus policyStatus, LocalDateTime startDate, LocalDateTime endDate,LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
         this.policyName = policyName;
         this.policyStatus = policyStatus;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    // Getters and Setters
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getPolicyName() {
         return policyName;
     }
@@ -47,6 +46,22 @@ public class InsurancePolicyRequest {
 
     public void setPolicyStatus(PolicyStatus policyStatus) {
         this.policyStatus = policyStatus;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public LocalDateTime getStartDate() {

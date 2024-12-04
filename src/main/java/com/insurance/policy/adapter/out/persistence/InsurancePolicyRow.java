@@ -1,7 +1,6 @@
 package com.insurance.policy.adapter.out.persistence;
 
-
-import com.insurance.policy.application.domain.model.PolicyStatus;
+import com.insurance.policy.application.domain.model.enumType.PolicyStatus;
 
 import java.time.LocalDateTime;
 

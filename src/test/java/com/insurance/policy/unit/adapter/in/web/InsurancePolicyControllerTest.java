@@ -6,9 +6,9 @@ import com.insurance.policy.adapter.in.web.GlobalExceptionHandler;
 import com.insurance.policy.adapter.in.web.InsurancePolicyController;
 import com.insurance.policy.adapter.out.persistence.InsurancePolicyMapper;
 import com.insurance.policy.application.domain.model.InsurancePolicy;
-import com.insurance.policy.application.domain.model.PolicyStatus;
-import com.insurance.policy.application.dto.InsurancePolicyRequest;
-import com.insurance.policy.application.dto.InsurancePolicyResponse;
+import com.insurance.policy.application.domain.model.enumType.PolicyStatus;
+import com.insurance.policy.adapter.in.web.dto.InsurancePolicyRequest;
+import com.insurance.policy.adapter.in.web.dto.InsurancePolicyResponse;
 import com.insurance.policy.application.exception.ResourceNotFoundException;
 import com.insurance.policy.application.port.in.InsurancePolicyServicePort;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,10 +28,11 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @ExtendWith(MockitoExtension.class)
 public class InsurancePolicyControllerTest {
@@ -52,7 +53,7 @@ public class InsurancePolicyControllerTest {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
-                .setControllerAdvice(new GlobalExceptionHandler()) // Add the exception handler here
+                .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());

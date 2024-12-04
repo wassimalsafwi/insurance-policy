@@ -1,6 +1,6 @@
 package com.insurance.policy.adapter.in.web;
 
-import com.insurance.policy.application.dto.ErrorResponse;
+import com.insurance.policy.adapter.in.web.dto.ErrorResponse;
 import com.insurance.policy.application.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +63,7 @@ public class GlobalExceptionHandler {
                 "An unexpected error occurred.",
                 HttpStatus.INTERNAL_SERVER_ERROR.value()
         );
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);    }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
 
 }

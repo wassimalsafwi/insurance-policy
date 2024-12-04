@@ -6,6 +6,7 @@ import com.insurance.policy.application.port.out.InsurancePolicyRepositoryPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class InsurancePolicyService implements InsurancePolicyServicePort {
@@ -29,6 +30,9 @@ public class InsurancePolicyService implements InsurancePolicyServicePort {
 
     @Override
     public InsurancePolicy createPolicy(InsurancePolicy policy) {
+        LocalDateTime now = LocalDateTime.now();
+        policy.setCreatedAt(now);
+        policy.setUpdatedAt(now);
         repository.createPolicy(policy);
         return policy;
     }
@@ -36,6 +40,9 @@ public class InsurancePolicyService implements InsurancePolicyServicePort {
     @Override
     @Transactional
     public InsurancePolicy updatePolicy(Integer id, InsurancePolicy policy) {
+        InsurancePolicy existingPolicy = repository.findPolicyById(id);
+        policy.setCreatedAt(existingPolicy.getCreatedAt());
+        policy.setUpdatedAt(LocalDateTime.now());
         repository.updatePolicy(id, policy);
         return policy;
     }

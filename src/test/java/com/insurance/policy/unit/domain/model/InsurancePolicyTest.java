@@ -1,7 +1,7 @@
 package com.insurance.policy.unit.domain.model;
 
 import com.insurance.policy.application.domain.model.InsurancePolicy;
-import com.insurance.policy.application.domain.model.PolicyStatus;
+import com.insurance.policy.application.domain.model.enumType.PolicyStatus;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -41,6 +41,5 @@ public class InsurancePolicyTest {
         assertEquals("Updated Policy", policy.getPolicyName());
         assertEquals(PolicyStatus.INACTIVE, policy.getPolicyStatus());
     }
-
 
 }

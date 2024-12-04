@@ -1,7 +1,7 @@
 package com.insurance.policy.integration.application.service;
 
 import com.insurance.policy.application.domain.model.InsurancePolicy;
-import com.insurance.policy.application.domain.model.PolicyStatus;
+import com.insurance.policy.application.domain.model.enumType.PolicyStatus;
 import com.insurance.policy.application.port.in.InsurancePolicyServicePort;
 import com.insurance.policy.application.port.out.InsurancePolicyRepositoryPort;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,8 +59,8 @@ public class InsurancePolicyIntegrationTest {
     @Test
     void shouldRetrieveAllInsurancePolicies() {
         //Given
-        InsurancePolicy policy1 = createPolicy(1,"Policy One", PolicyStatus.ACTIVE);
-        InsurancePolicy policy2 = createPolicy(2,"Policy Two", PolicyStatus.INACTIVE);
+        InsurancePolicy policy1 = createPolicy(1, "Policy One", PolicyStatus.ACTIVE);
+        InsurancePolicy policy2 = createPolicy(2, "Policy Two", PolicyStatus.INACTIVE);
         repository.createPolicy(policy1);
         repository.createPolicy(policy2);
 
@@ -76,7 +76,7 @@ public class InsurancePolicyIntegrationTest {
     @Test
     void shouldUpdateInsurancePolicy() {
         //Given
-        InsurancePolicy existingPolicy = createPolicy(1,"Policy To Update", PolicyStatus.ACTIVE);
+        InsurancePolicy existingPolicy = createPolicy(1, "Policy To Update", PolicyStatus.ACTIVE);
         repository.createPolicy(existingPolicy);
 
         InsurancePolicy updatedPolicy = new InsurancePolicy(
@@ -107,30 +107,7 @@ public class InsurancePolicyIntegrationTest {
 
     @Test
     void shouldAutomaticallySetTimestampsOnCreate() {
-        // Given
-        InsurancePolicy policy = new InsurancePolicy(
-                null,
-                "Policy with Auto Timestamps",
-                PolicyStatus.ACTIVE,
-                LocalDateTime.now().plusDays(30),
-                LocalDateTime.now(),
-                null, // created_at will be set by the adapter
-                null  // updated_at will be set by the adapter
-        );
-
-        // When
-        insurancePolicyService.createPolicy(policy);
-
-        // Then
-        InsurancePolicy savedPolicy = repository.findPolicyById(1); // Assuming ID 1
-        assertThat(savedPolicy.getCreatedAt()).isNotNull();
-        assertThat(savedPolicy.getUpdatedAt()).isNotNull();
-        assertThat(savedPolicy.getCreatedAt()).isEqualTo(savedPolicy.getUpdatedAt());
-    }
-
-    @Test
-    void shouldUpdateUpdatedAtButNotCreatedAt() throws InterruptedException {
-        // Given
+        //Given
         InsurancePolicy policy = new InsurancePolicy(
                 null,
                 "Policy with Auto Timestamps",
@@ -141,16 +118,37 @@ public class InsurancePolicyIntegrationTest {
                 null
         );
 
-        // Create
+        //When
         insurancePolicyService.createPolicy(policy);
 
+        //Then
         InsurancePolicy savedPolicy = repository.findPolicyById(1);
+        assertThat(savedPolicy.getCreatedAt()).isNotNull();
+        assertThat(savedPolicy.getUpdatedAt()).isNotNull();
+        assertThat(savedPolicy.getCreatedAt()).isEqualTo(savedPolicy.getUpdatedAt());
+    }
 
+    @Test
+    void shouldUpdateUpdatedAtButNotCreatedAt() throws InterruptedException {
+        //Given
+        InsurancePolicy policy = new InsurancePolicy(
+                null,
+                "Policy with Auto Timestamps",
+                PolicyStatus.ACTIVE,
+                LocalDateTime.now().plusDays(30),
+                LocalDateTime.now(),
+                null,
+                null
+        );
+
+        //When
+        insurancePolicyService.createPolicy(policy);
+        InsurancePolicy savedPolicy = repository.findPolicyById(1);
         Thread.sleep(10);
-
         savedPolicy.setPolicyName("Updated Policy");
         insurancePolicyService.updatePolicy(savedPolicy.getId(), savedPolicy);
 
+        //Then
         InsurancePolicy updatedPolicy = repository.findPolicyById(1);
         assertThat(updatedPolicy.getCreatedAt()).isEqualTo(savedPolicy.getCreatedAt());
         assertThat(updatedPolicy.getUpdatedAt()).isAfter(savedPolicy.getCreatedAt());

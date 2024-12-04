@@ -1,4 +1,4 @@
-package com.insurance.policy.application.dto;
+package com.insurance.policy.adapter.in.web.dto;
 
 import java.util.Map;
 
@@ -6,7 +6,7 @@ public class ErrorResponse {
     private final String title;
     private final String detail;
     private final int status;
-    private final Map<String, String> validationErrors; // Optional
+    private final Map<String, String> validationErrors;
 
     public ErrorResponse(String title, String detail, int status, Map<String, String> validationErrors) {
         this.title = title;

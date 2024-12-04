@@ -1,15 +1,14 @@
 package com.insurance.policy.acceptance.steps;
 
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.insurance.policy.InsurancePolicyManagementApplication;
-import com.insurance.policy.adapter.out.persistence.InsurancePolicyRepositoryAdapter;
 import com.insurance.policy.application.domain.model.InsurancePolicy;
-import com.insurance.policy.application.domain.model.PolicyStatus;
-import com.insurance.policy.application.dto.InsurancePolicyRequest;
-import com.insurance.policy.application.dto.InsurancePolicyResponse;
+import com.insurance.policy.application.domain.model.enumType.PolicyStatus;
+import com.insurance.policy.adapter.in.web.dto.InsurancePolicyRequest;
+import com.insurance.policy.adapter.in.web.dto.InsurancePolicyResponse;
+import com.insurance.policy.application.port.out.InsurancePolicyRepositoryPort;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -17,7 +16,6 @@ import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
@@ -38,7 +36,7 @@ public class InsurancePolicySteps {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private InsurancePolicyRepositoryAdapter insurancePolicyRepositoryAdapter;
+    private InsurancePolicyRepositoryPort insurancePolicyRepositoryPort;
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -60,10 +58,10 @@ public class InsurancePolicySteps {
                     Enum.valueOf(PolicyStatus.class, policyData.get("policyStatus")),
                     LocalDateTime.parse(policyData.get("startDate")),
                     LocalDateTime.parse(policyData.get("endDate")),
-                    LocalDateTime.parse(policyData.get("createdAt")),
-                    LocalDateTime.parse(policyData.get("updatedAt"))
+                    null,
+                    null
             );
-            insurancePolicyRepositoryAdapter.createPolicy(policy);
+            insurancePolicyRepositoryPort.createPolicy(policy);
             generatedIds.add(Integer.parseInt(policyData.get("id")));
         }
     }
@@ -91,8 +89,6 @@ public class InsurancePolicySteps {
             assertThat(actual.get("policyStatus")).isEqualTo(expected.get("policyStatus"));
             assertThat(actual.get("startDate")).isEqualTo(expected.get("startDate"));
             assertThat(actual.get("endDate")).isEqualTo(expected.get("endDate"));
-            assertThat(actual.get("createdAt")).isEqualTo(expected.get("createdAt"));
-            assertThat(actual.get("updatedAt")).isEqualTo(expected.get("updatedAt"));
         }
     }
 
@@ -114,17 +110,13 @@ public class InsurancePolicySteps {
 
     @Then("I should receive the following insurance policy:")
     public void iShouldReceiveTheFollowingInsurancePolicy(List<Map<String, String>> expectedPolicy) throws Exception {
-        // Deserialize the response into a single InsurancePolicyEntity
         InsurancePolicyResponse actualPolicy = objectMapper.readValue(response.getBody(), InsurancePolicyResponse.class);
 
-        // Validate the fields
         assertThat(actualPolicy.getId()).isEqualTo(Integer.parseInt(expectedPolicy.get(0).get("id")));
         assertThat(actualPolicy.getPolicyName()).isEqualTo(expectedPolicy.get(0).get("policyName"));
         assertThat(actualPolicy.getPolicyStatus().name()).isEqualTo(expectedPolicy.get(0).get("policyStatus"));
         assertThat(actualPolicy.getStartDate().toString()).isEqualTo(expectedPolicy.get(0).get("startDate"));
         assertThat(actualPolicy.getEndDate().toString()).isEqualTo(expectedPolicy.get(0).get("endDate"));
-        assertThat(actualPolicy.getCreatedAt().toString()).isEqualTo(expectedPolicy.get(0).get("createdAt"));
-        assertThat(actualPolicy.getUpdatedAt().toString()).isEqualTo(expectedPolicy.get(0).get("updatedAt"));
     }
 
     @When("I edit the insurance policy with ID {int} with the following details:")
@@ -135,12 +127,10 @@ public class InsurancePolicySteps {
 
     @Then("the database should contain the following insurance policies:")
     public void theDatabaseShouldContainTheFollowingInsurancePolicies(List<Map<String, String>> expectedPolicies) {
-        List<InsurancePolicy> actualPolicies = insurancePolicyRepositoryAdapter.findAllPolicies();
+        List<InsurancePolicy> actualPolicies = insurancePolicyRepositoryPort.findAllPolicies();
 
-        // Assert size matches
         assertThat(actualPolicies).hasSize(expectedPolicies.size());
 
-        // Assert each policy matches
         for (int i = 0; i < expectedPolicies.size(); i++) {
             Map<String, String> expected = expectedPolicies.get(i);
             InsurancePolicy actual = actualPolicies.get(i);
@@ -150,22 +140,6 @@ public class InsurancePolicySteps {
             assertThat(actual.getStartDate().toString()).isEqualTo(expected.get("startDate"));
             assertThat(actual.getEndDate().toString()).isEqualTo(expected.get("endDate"));
         }
-    }
-
-    @Then("The insurance policy with ID {int} should have the following details:")
-    public void theInsurancePolicyWithIDShouldHaveTheFollowingDetails(int id, List<Map<String, String>> expectedDetails) {
-        ResponseEntity<InsurancePolicyResponse> response = restTemplate.getForEntity(
-                "/api/insurance-policies/" + id, InsurancePolicyResponse.class);
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-        InsurancePolicyResponse actual = response.getBody();
-        Map<String, String> expected = expectedDetails.get(0);
-
-        assertThat(actual.getPolicyName()).isEqualTo(expected.get("policyName"));
-        assertThat(actual.getPolicyStatus()).isEqualTo(Enum.valueOf(PolicyStatus.class, expected.get("policyStatus")));
-        assertThat(actual.getStartDate()).isEqualTo(LocalDateTime.parse(expected.get("startDate")));
-        assertThat(actual.getEndDate()).isEqualTo(LocalDateTime.parse(expected.get("endDate")));
     }
 
     private InsurancePolicyRequest mapToInsurancePolicyRequest(Map<String, String> policyData) {
