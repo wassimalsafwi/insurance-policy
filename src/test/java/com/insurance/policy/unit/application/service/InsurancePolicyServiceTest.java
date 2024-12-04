@@ -4,6 +4,7 @@ import com.insurance.policy.application.domain.model.InsurancePolicy;
 import com.insurance.policy.application.domain.model.enumType.PolicyStatus;
 import com.insurance.policy.application.domain.service.InsurancePolicyService;
 import com.insurance.policy.application.exception.ResourceNotFoundException;
+import com.insurance.policy.application.port.in.InsurancePolicyServicePort;
 import com.insurance.policy.application.port.out.InsurancePolicyRepositoryPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.when;
 public class InsurancePolicyServiceTest {
 
     private InsurancePolicyRepositoryPort repository;
-    private InsurancePolicyService service;
+    private InsurancePolicyServicePort service;
 
     @BeforeEach
     void setup() {
