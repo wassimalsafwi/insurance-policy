@@ -143,12 +143,10 @@ public class InsurancePolicySteps {
     }
 
     private InsurancePolicyRequest mapToInsurancePolicyRequest(Map<String, String> policyData) {
-        InsurancePolicyRequest request = new InsurancePolicyRequest();
-        request.setPolicyName(policyData.get("policyName"));
-        request.setPolicyStatus(Enum.valueOf(PolicyStatus.class, policyData.get("policyStatus")));
-        request.setStartDate(LocalDateTime.parse(policyData.get("startDate")));
-        request.setEndDate(LocalDateTime.parse(policyData.get("endDate")));
-        return request;
+        return new InsurancePolicyRequest(policyData.get("policyName"),
+                Enum.valueOf(PolicyStatus.class, policyData.get("policyStatus")),
+                LocalDateTime.parse(policyData.get("startDate")),
+                LocalDateTime.parse(policyData.get("endDate")));
     }
 
 }

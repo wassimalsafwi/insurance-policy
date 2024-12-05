@@ -7,23 +7,20 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
-public class InsurancePolicyRequest {
+public final class InsurancePolicyRequest {
 
     @NotBlank(message = "Policy name must be filled and with at least a non-whitespace character")
     @Size(min = 1, max = 255, message = "Policy name must be between 1 and 255 characters")
-    private String policyName;
+    private final String policyName;
 
     @NotNull(message = "Policy status must not be null")
-    private PolicyStatus policyStatus;
+    private final PolicyStatus policyStatus;
 
     @NotNull(message = "Start date must not be null")
-    private LocalDateTime startDate;
+    private final LocalDateTime startDate;
 
     @NotNull(message = "End date must not be null")
-    private LocalDateTime endDate;
-
-    public InsurancePolicyRequest() {
-    }
+    private final LocalDateTime endDate;
 
     public InsurancePolicyRequest(String policyName, PolicyStatus policyStatus, LocalDateTime startDate, LocalDateTime endDate) {
         this.policyName = policyName;
@@ -36,31 +33,15 @@ public class InsurancePolicyRequest {
         return policyName;
     }
 
-    public void setPolicyName(String policyName) {
-        this.policyName = policyName;
-    }
-
     public PolicyStatus getPolicyStatus() {
         return policyStatus;
-    }
-
-    public void setPolicyStatus(PolicyStatus policyStatus) {
-        this.policyStatus = policyStatus;
     }
 
     public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
-
     public LocalDateTime getEndDate() {
         return endDate;
-    }
-
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
     }
 }
