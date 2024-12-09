@@ -14,11 +14,9 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
 public class InsurancePolicyMapperTest {
 
-    @Autowired
-    private InsurancePolicyMapper mapper;
+    private final InsurancePolicyMapper mapper = new InsurancePolicyMapper();
 
     @Test
     void shouldMapRowToDomain() {
