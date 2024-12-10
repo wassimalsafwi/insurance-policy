@@ -4,31 +4,30 @@ import com.insurance.policy.application.domain.model.InsurancePolicy;
 import com.insurance.policy.application.domain.model.enumType.PolicyStatus;
 import com.insurance.policy.application.domain.service.InsurancePolicyService;
 import com.insurance.policy.application.exception.ResourceNotFoundException;
-import com.insurance.policy.application.port.in.InsurancePolicyServicePort;
 import com.insurance.policy.application.port.out.InsurancePolicyRepositoryPort;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class InsurancePolicyServiceTest {
 
+    @Mock
     private InsurancePolicyRepositoryPort repository;
-    private InsurancePolicyServicePort service;
 
-    @BeforeEach
-    void setup() {
-        repository = mock(InsurancePolicyRepositoryPort.class);
-        service = new InsurancePolicyService(repository);
-    }
+    @InjectMocks
+    private InsurancePolicyService service;
 
     @Test
     void getPolicyById_ShouldReturnPolicy_WhenPolicyExists() {
